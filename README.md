@@ -7,9 +7,13 @@ All calculations are updated as of April 2024 with references linked below:
 - [PhilHealth Contribution Table as per PhilHealth Circular No. 2019-0009](https://www.philhealth.gov.ph/partners/employers/ContributionTable_v2.pdf)
 - [HDMF/Pag-IBIG Contribution Table for 2024](https://mpm.ph/hdmf-pag-ibig-table-2024/)
 
-### Dev note
+### Dev Note
 Using Next.js / React is kinda an overkill (only did so to familiarize myself with Next App Route).
 Also, I might add more calculators in the future. :)
+
+## Live App
+
+The app is deployed on GitHub pages and can be accessed here: https://liezlsantos.github.io/tax-ph/.
 
 ## Getting Started
 
