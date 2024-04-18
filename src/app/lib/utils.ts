@@ -1,26 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
-
-export async function POST(request: NextRequest) {
-  const data = await request.json();
-  const monthlyIncome = data.monthlyGross;
-
-  const sssContribution = getSSSContribution(monthlyIncome);
-  const philHealthContribution = getPhilHealthContribution(monthlyIncome);
-  const pagIBIGContribution = getPagIBIGContribution(monthlyIncome);
-  const totalDeduction = sssContribution + philHealthContribution + pagIBIGContribution;
-  const taxableIncome = monthlyIncome - totalDeduction;
-  const withholdingTax = computeWithHoldingTax(taxableIncome);
-
-  return NextResponse.json({
-    sss: sssContribution,
-    philhealth: philHealthContribution,
-    pagibig: pagIBIGContribution,
-    withholdingTax,
-    netIncome: taxableIncome - withholdingTax,
-  });
-}
-
-function getSSSContribution(monthlyIncome: number): number {
+export function getSSSContribution(monthlyIncome: number): number {
   /**
    * Monthly income x SSS EE (employee) contribution
    * Ref: https://www.sss.gov.ph/sss/DownloadContent?fileName=2023-Schedule-of-Contributions.pdf
@@ -64,12 +42,12 @@ function getSSSContribution(monthlyIncome: number): number {
   //   [20500, 945],
   //   [21250, 967.5],
   //   [21750, 990],
-  //   // okay, kinda figured out the pattern at this point (in every 500 increase in income, there's a 22.5 increase in contri)
-  //   // so formula is something like:
-  //   // if income < 4250, sss = 180;
-  //   // else if income >= 29750, sss = 1350;
-  //   // else sss = 202.5 + (income - 4250) / 500) * 22.5;
-  //   // pretty sure this is right but I'm almost done so let's just complete this table;
+  //   // Okay, kinda figured out the pattern at this point (in every 500 increase in income, there's a 22.5 increase in contri)
+  //   // so formula should be something like:
+  //   //   if income < 4250, sss = 180;
+  //   //   else if income >= 29750, sss = 1350;
+  //   //   else sss = 202.5 + (income - 4250) / 500) * 22.5;
+  //   // Pretty sure this is right but I'm almost done so let's just complete this table.
   //   [22250, 1012.5],
   //   [22750, 1035],
   //   [23250, 1057.5],
@@ -100,18 +78,18 @@ function getSSSContribution(monthlyIncome: number): number {
   return base + (Math.floor((monthlyIncome - 4250) / 500) + 1) * 22.5;
 }
 
-function getPagIBIGContribution(monthlyIncome: number): number {
+export function getPagIBIGContribution(monthlyIncome: number): number {
   if (monthlyIncome <= 1500) {
     return monthlyIncome * .01;
   }
   return Math.min(monthlyIncome, 10000) * 0.02;
 }
 
-function getPhilHealthContribution(monthlyIncome: number): number {
+export function getPhilHealthContribution(monthlyIncome: number): number {
   return ((monthlyIncome < 10000 ? 10000 : (Math.min(monthlyIncome, 100000))) * 0.05) / 2;
 }
 
-function computeWithHoldingTax(taxableIncome: number): number {
+export function computeWithHoldingTax(taxableIncome: number): number {
   if (taxableIncome <= 20833) {
     return 0;
   }

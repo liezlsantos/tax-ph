@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
+import {
+  getSSSContribution,
+  getPagIBIGContribution,
+  getPhilHealthContribution,
+  computeWithHoldingTax
+} from "./lib/utils";
 
 export default function Home() {
 
@@ -26,22 +32,18 @@ export default function Home() {
     setNetIncome(0);
     setWithholdingTax(0);
 
-    const response = await fetch("/api/tax", {
-      method: "POST",
-      body: JSON.stringify({
-        monthlyGross,
-        sss,
-        pagibig,
-        philhealth
-      })
-    });
-    const data = await response.json();
+    const sssContribution = getSSSContribution(monthlyGross);
+    const pagIBIGContribution = getPagIBIGContribution(monthlyGross);
+    const philHealthContribution = getPhilHealthContribution(monthlyGross);
+    const totalDeduction = sssContribution + philHealthContribution + pagIBIGContribution;
+    const taxableIncome = monthlyGross - totalDeduction;
+    const withholdingTax = computeWithHoldingTax(taxableIncome);
 
-    setSSS(data.sss);
-    setPagibig(data.pagibig);
-    setPhilhealth(data.philhealth);
-    setWithholdingTax(data.withholdingTax);
-    setNetIncome(data.netIncome);
+    setSSS(sssContribution);
+    setPagibig(pagIBIGContribution);
+    setPhilhealth(philHealthContribution);
+    setWithholdingTax(withholdingTax);
+    setNetIncome(taxableIncome - withholdingTax);
   }, [monthlyGross]);
 
   useEffect(() => {
