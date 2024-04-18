@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.body {
+  @apply text-slate-600;
+}
+
+.input-group {
+  input {
+    @apply border rounded p-1 pt-0;
+  }
+
+  label {
+    @apply mr-2 mb-2;
+  }
+
+  @apply flex flex-col pb-2;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+.card {
+  @apply border rounded-lg p-8 shadow;
+}
+
+button.primary {
+  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+}
+
+a {
+  @apply hover:underline
+}
