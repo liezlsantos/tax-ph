@@ -143,7 +143,7 @@ export default function Home() {
               </li>
             </ul>
             <div className="py-2">
-              Code is available on <a href="https://github.com/liezlsantos/clow-cards">GitHub</a>.
+              Code is available on <a href="https://github.com/liezlsantos/tax-ph">GitHub</a>.
               If you noticed a bug, feel free to open a PR for a fix.
             </div>
           </div>
