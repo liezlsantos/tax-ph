@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 .body {
+  font-family: "Avenir,Helvetica,Arial,sans-serif";
+
   @apply text-slate-600;
 }
 
@@ -24,12 +26,14 @@ h1 {
 
 .card {
   @apply border rounded-lg p-8 shadow;
-}
 
-button.primary {
-  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+  .card-title {
+    text-transform: uppercase;
+    font-weight: 700;
+  }
 }
 
 a {
+  color: #0969da;
   @apply hover:underline
 }

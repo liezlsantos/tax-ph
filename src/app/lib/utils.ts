@@ -1,3 +1,9 @@
+export function formatAmount(amount: number): string {
+  return amount.toLocaleString("en-US", {
+    minimumFractionDigits: 2
+  });
+};
+
 export function getSSSContribution(monthlyIncome: number): number {
   /**
    * Monthly income x SSS EE (employee) contribution
