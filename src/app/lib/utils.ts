@@ -1,7 +1,8 @@
 export function formatAmount(amount: number): string {
-  return amount.toLocaleString("en-US", {
+  const value = Math.abs(amount).toLocaleString("en-US", {
     minimumFractionDigits: 2
   });
+  return amount < 0 ? `(${value})` : value;
 };
 
 export function getSSSContribution(monthlyIncome: number): number {
@@ -95,7 +96,7 @@ export function getPhilHealthContribution(monthlyIncome: number): number {
   return ((monthlyIncome < 10000 ? 10000 : (Math.min(monthlyIncome, 100000))) * 0.05) / 2;
 }
 
-export function computeWithHoldingTax(taxableIncome: number): number {
+export function computeWithholdingTax(taxableIncome: number): number {
   if (taxableIncome <= 20833) {
     return 0;
   }
@@ -112,6 +113,25 @@ export function computeWithHoldingTax(taxableIncome: number): number {
     return 33541.8 + (taxableIncome - 166667) * 0.3;
   }
   return 183541.8 + (taxableIncome - 666667) * 0.35;
+}
+
+export function computeIncomeTax(annualTaxableIncome: number): number {
+  if (annualTaxableIncome <= 250000) {
+    return 0;
+  }
+  if (annualTaxableIncome <= 400000) {
+    return (annualTaxableIncome - 250000) * .15;
+  }
+  if (annualTaxableIncome <= 800000) {
+    return 22500 + (annualTaxableIncome - 400000) * 0.2;
+  }
+  if (annualTaxableIncome <= 2000000) {
+    return 102500 + (annualTaxableIncome - 800000) * 0.25;
+  }
+  if (annualTaxableIncome <= 8000000) {
+    return 402500 + (annualTaxableIncome - 2000000) * 0.3;
+  }
+  return 2202500 + (annualTaxableIncome - 8000000) * 0.35;
 }
 
 /**

@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.body {
-  font-family: "Avenir,Helvetica,Arial,sans-serif";
-
-  @apply text-slate-600;
+body {
+  color: #2c3e50;
 }
 
 .input-group {
@@ -22,12 +20,16 @@
 
 h1 {
   font-size: 1.5rem;
+  font-family: Avenir,Helvetica,Arial,sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .card {
   @apply border rounded-lg p-8 shadow;
 
   .card-title {
+    font-family: Avenir,Helvetica,Arial,sans-serif;
     text-transform: uppercase;
     font-weight: 700;
   }
