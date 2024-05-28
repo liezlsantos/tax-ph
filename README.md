@@ -19,10 +19,14 @@ The app is deployed on GitHub pages and can be accessed here: https://liezlsanto
 
 ### Prerequisites
 
-Node.js version >= v18.17.0
+Node.js version >= 20
 
 ### Starting the development server
-1. Run
+1. Install the dependencies
+```
+npm run install
+```
+2. Run
 ```bash
 npm run dev
 ```

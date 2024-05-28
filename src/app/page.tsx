@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import debounce from "lodash.debounce";
 import {
+  computeIncomeTax,
+  computeWithholdingTax,
   getSSSContribution,
   getPagIBIGContribution,
   getPhilHealthContribution,
-  computeWithHoldingTax,
   formatAmount,
 } from "./lib/utils";
 
@@ -19,6 +20,7 @@ export default function Home() {
 
   const [withholdingTax, setWithholdingTax] = useState<number>(0);
   const [netIncome, setNetIncome] = useState<number>(0);
+  const [annualIncomeTax, setAnnualIncomeTax] = useState<number>(0);
 
   const handleIncomeChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -42,13 +44,17 @@ export default function Home() {
     const philHealthContribution = getPhilHealthContribution(monthlyGross);
     const totalDeduction = sssContribution + philHealthContribution + pagIBIGContribution;
     const taxableIncome = monthlyGross - totalDeduction;
-    const withholdingTax = computeWithHoldingTax(taxableIncome);
+    const withholdingTax = computeWithholdingTax(taxableIncome);
+    const annualGrossIncome = monthlyGross * 13;
+    const annualTaxableIncome = annualGrossIncome - totalDeduction * 12 - Math.min(90000, monthlyGross);
+    const annualIncomeTax = computeIncomeTax(annualTaxableIncome);
 
     setSSS(sssContribution);
     setPagibig(pagIBIGContribution);
     setPhilhealth(philHealthContribution);
     setWithholdingTax(withholdingTax);
     setNetIncome(taxableIncome - withholdingTax);
+    setAnnualIncomeTax(annualIncomeTax);
   }, [monthlyGross]);
 
   return (
@@ -93,7 +99,7 @@ export default function Home() {
               </div>
             </div>
             <div className="card">
-              <div className="py-2 card-title">Tax & Income</div>
+              <div className="py-2 card-title">Monthly Tax & Income</div>
               <div className="flex w-full py-1">
                 <div className="flex-grow">Gross Income</div>
                 <div>₱ {formatAmount(monthlyGross)}</div>
@@ -109,6 +115,42 @@ export default function Home() {
               <div className="flex w-full py-1">
                 <div className="flex-grow">Net Income</div>
                 <div className="font-bold">₱ {formatAmount(netIncome)}</div>
+              </div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 md:my-6">
+            <div className="card">
+              <div className="py-2 card-title">13th Month Tax & Income</div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Taxable Income</div>
+                <div>₱ {formatAmount(monthlyGross > 90000 ? monthlyGross - 90000 : 0)}</div>
+              </div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Withholding Tax {annualIncomeTax - withholdingTax * 12 < 0 && "Refund"}</div>
+                <div>₱ {formatAmount(annualIncomeTax - withholdingTax * 12)}</div>
+              </div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Net Income</div>
+                <div className="font-bold">₱ {formatAmount((monthlyGross * 13 - (sss + pagibig + philhealth) * 12 - annualIncomeTax) - netIncome * 12)}</div>
+              </div>
+            </div>
+            <div className="card">
+              <div className="py-2 card-title">Annual Tax & Income</div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Gross Income</div>
+                <div>₱ {formatAmount(monthlyGross * 13)}</div>
+              </div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Taxable Income</div>
+                <div>₱ {monthlyGross ? formatAmount(monthlyGross * 13 - (sss + pagibig + philhealth) * 12 - Math.min(monthlyGross, 90000)) : 0}</div>
+              </div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Withholding Tax</div>
+                <div>₱ {formatAmount(annualIncomeTax)}</div>
+              </div>
+              <div className="flex w-full py-1">
+                <div className="flex-grow">Net Income</div>
+                <div className="font-bold">₱ {formatAmount(monthlyGross * 13 - (sss + pagibig + philhealth) * 12 - annualIncomeTax)}</div>
               </div>
             </div>
           </div>
