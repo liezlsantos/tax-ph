@@ -20,7 +20,7 @@ body {
 
 h1 {
   font-size: 1.5rem;
-  font-family: Avenir,Helvetica,Arial,sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -29,7 +29,7 @@ h1 {
   @apply border rounded-lg p-8 shadow;
 
   .card-title {
-    font-family: Avenir,Helvetica,Arial,sans-serif;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     font-weight: 700;
   }
@@ -37,5 +37,5 @@ h1 {
 
 a {
   color: #0969da;
-  @apply hover:underline
+  @apply hover:underline;
 }
