@@ -8,7 +8,7 @@ export function getSSSContribution(monthlyIncome: number): number {
     return base;
   }
   if (monthlyIncome >= 34750) {
-    return 1350;
+    return 1750;
   }
   return base + (Math.floor((monthlyIncome - 5250) / 500) + 1) * 25;
 }

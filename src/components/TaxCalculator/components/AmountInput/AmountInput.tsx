@@ -4,19 +4,19 @@ import { ReactElement } from "react";
 type AmountInputProperties = {
   label: string;
   name: string;
-  value?: string;
+  isRequired?: boolean;
 };
 
 export function AmountInput({
   label,
   name,
-  value,
+  isRequired = false,
 }: AmountInputProperties): ReactElement {
   return (
     <Input
       name={name}
       label={label}
-      value={value}
+      isRequired={isRequired}
       type="number"
       labelPlacement="outside"
       placeholder="0.00"
