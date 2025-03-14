@@ -92,7 +92,7 @@ export default function TaxCalculator(): ReactElement {
           grossIncome * 13 -
           totalDeduction * 12 -
           annualIncomeTax -
-          netIncome * 12,
+          (taxableIncome - withholdingTax - deductionAfterTax) * 12,
       },
     });
   };
@@ -100,7 +100,11 @@ export default function TaxCalculator(): ReactElement {
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <Form className="card flex flex-col gap-6" onSubmit={handleSubmit}>
-        <AmountInput name="grossIncome" label="Monthly Gross Income" isRequired={true} />
+        <AmountInput
+          name="grossIncome"
+          label="Monthly Gross Income"
+          isRequired={true}
+        />
         <AmountInput name="allowance" label="Monthly Non-Taxable Allowance" />
         <AmountInput name="deduction" label="Other Deductions (after tax)" />
 
